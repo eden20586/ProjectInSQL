@@ -1,0 +1,60 @@
+CREATE TABLE `car_manufacturer` (
+`manufacturer_name` varchar(20) NOT NULL ,
+PRIMARY KEY (`manufacturer_name`))
+
+CREATE TABLE `cars_models` (
+`chassis_num` varchar(17) NOT NULL,
+`price` int NOT NULL,
+`model_name` varchar(45) NOT NULL,
+`year` year NOT NULL,
+`finish_level` varchar(45) NOT NULL,
+`Intercity_fuel_consumption` varchar(40) NOT NULL,
+`urban_fuel_consumption` varchar(40) NOT NULL,
+`manufacturer_name` varchar(20) NOT NULL,
+PRIMARY KEY (`chassis_num`,`manufacturer_name`),
+KEY `fk7_idx` (`manufacturer_name`),
+KEY `Index_car_price` (`price`),
+CONSTRAINT `fk7` FOREIGN KEY (`manufacturer_name`) REFERENCES `car_manufacturer` (`manufacturer_name`))
+
+CREATE TABLE `customers` (
+`id` varchar(9) NOT NULL,
+`age` int NOT NULL,
+`status` varchar(30) NOT NULL,
+`max_budget` int NOT NULL,
+`living_area` varchar(15) NOT NULL,
+`position_in_work` varchar(45) NOT NULL,
+PRIMARY KEY (`id`),
+KEY `Index_position_in_work` (`position_in_work`))
+
+CREATE TABLE `customers_and_cars_model` (
+`customer_id` varchar(9) NOT NULL,
+`chassis_num` varchar(17) NOT NULL,
+PRIMARY KEY (`customer_id`,`chassis_num`),
+KEY `fk1` (`chassis_num`),
+CONSTRAINT `fk1` FOREIGN KEY (`chassis_num`) REFERENCES `cars_models` (`chassis_num`),
+CONSTRAINT `fk2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`))
+
+CREATE TABLE `customers_in_licensed_garages` (
+`customer_id` varchar(9) NOT NULL,
+`licensed_garages_number` varchar(10) NOT NULL,
+PRIMARY KEY (`customer_id`,`licensed_garages_number`),
+KEY `fk6` (`licensed_garages_number`),
+CONSTRAINT `fk5` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
+CONSTRAINT `fk6` FOREIGN KEY (`licensed_garages_number`) REFERENCES `licensed_garages` (`garage_number`))
+
+CREATE TABLE `licensed_garages` (
+`garage_number` varchar(10) NOT NULL,
+`license_from` varchar(45) NOT NULL,
+`activity_area` varchar(10) NOT NULL,
+`garage_name‏` varchar(45) NOT NULL,
+`garage_address‏` varchar(45) NOT NULL,
+`garage_activity_time` varchar(45) NOT NULL,
+PRIMARY KEY (`garage_number`))
+
+CREATE TABLE `licensed_garages_of_several_car_manufacturers` (
+`manufacturer_name` varchar(20) NOT NULL,
+`garage_number` varchar(10) NOT NULL,
+PRIMARY KEY (`manufacturer_name`,`garage_number`),
+KEY `fk4` (`garage_number`),
+CONSTRAINT `fk3` FOREIGN KEY (`manufacturer_name`) REFERENCES `car_manufacturer` (`manufacturer_name`),
+CONSTRAINT `fk4` FOREIGN KEY (`garage_number`) REFERENCES `licensed_garages` (`garage_number`))
