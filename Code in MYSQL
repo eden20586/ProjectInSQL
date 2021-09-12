@@ -1,6 +1,8 @@
 CREATE TABLE `car_manufacturer` (
 `manufacturer_name` varchar(20) NOT NULL ,
 PRIMARY KEY (`manufacturer_name`))
+INSERT INTO `car_manufacturer` VALUES ('mazda'),('subaru'),('toyota');
+
 
 CREATE TABLE `cars_models` (
 `chassis_num` varchar(17) NOT NULL,
@@ -15,6 +17,8 @@ PRIMARY KEY (`chassis_num`,`manufacturer_name`),
 KEY `fk7_idx` (`manufacturer_name`),
 KEY `Index_car_price` (`price`),
 CONSTRAINT `fk7` FOREIGN KEY (`manufacturer_name`) REFERENCES `car_manufacturer` (`manufacturer_name`))
+INSERT INTO `cars_models` VALUES ('31',91000,'mazda3',2020,'high','1:18','1:20','mazda'),('32',150000,'Toyota corolla',2021,'high','1:12','1:10','toyota'),('33',170000,'subaru BRZ',2020,'meduim','1:8','1:10','subaru'),('34',250000,'mazda6',2021,'high','1:12','1:12','mazda'),('35',100000,'mazda CX5',2021,'high','1:10','1:8','mazda');
+
 
 CREATE TABLE `customers` (
 `id` varchar(9) NOT NULL,
@@ -25,6 +29,8 @@ CREATE TABLE `customers` (
 `position_in_work` varchar(45) NOT NULL,
 PRIMARY KEY (`id`),
 KEY `Index_position_in_work` (`position_in_work`))
+INSERT INTO `customers` VALUES ('70',34,'single',225000,'מרכז','CEO'),('71',25,'single',95000,'מרכז','CTO'),('89',27,'married',100000,'דרום','CIFO'),('90',24,'married',160000,'מרכז','CEO'),('91',28,'divorcee',100000,'מרכז','shift'),('92',20,'single',120000,'צפון','CTO');
+
 
 CREATE TABLE `customers_and_cars_model` (
 `customer_id` varchar(9) NOT NULL,
@@ -33,6 +39,8 @@ PRIMARY KEY (`customer_id`,`chassis_num`),
 KEY `fk1` (`chassis_num`),
 CONSTRAINT `fk1` FOREIGN KEY (`chassis_num`) REFERENCES `cars_models` (`chassis_num`),
 CONSTRAINT `fk2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`))
+INSERT INTO `customers_and_cars_model` VALUES ('70','31'),('90','31'),('92','31'),('70','32'),('90','32'),('70','33'),('90','33');
+
 
 CREATE TABLE `customers_in_licensed_garages` (
 `customer_id` varchar(9) NOT NULL,
@@ -41,6 +49,8 @@ PRIMARY KEY (`customer_id`,`licensed_garages_number`),
 KEY `fk6` (`licensed_garages_number`),
 CONSTRAINT `fk5` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`),
 CONSTRAINT `fk6` FOREIGN KEY (`licensed_garages_number`) REFERENCES `licensed_garages` (`garage_number`))
+INSERT INTO `customers_in_licensed_garages` VALUES ('90','54');
+
 
 CREATE TABLE `licensed_garages` (
 `garage_number` varchar(10) NOT NULL,
@@ -50,6 +60,8 @@ CREATE TABLE `licensed_garages` (
 `garage_address‏` varchar(45) NOT NULL,
 `garage_activity_time` varchar(45) NOT NULL,
 PRIMARY KEY (`garage_number`))
+INSERT INTO `licensed_garages` VALUES ('54','mazda','צפון','מוסך יואב','חיפה , הנשיא 21','8:00 - 18:00'),('55','mazda','צפון','מוסך אבי נעימי','קריית אתא , עצמאות 47','9:00 - 17:00'),('56','toyota','דרום','מוסך חיים מאיר','קריית אתא , עצמאות 45','9:00 - 17:00'),('57','subaru','מרכז','מוסך נירו דוידי','פתח תקווה , עצמאות 49','9:00 - 17:00');
+
 
 CREATE TABLE `licensed_garages_of_several_car_manufacturers` (
 `manufacturer_name` varchar(20) NOT NULL,
@@ -58,3 +70,4 @@ PRIMARY KEY (`manufacturer_name`,`garage_number`),
 KEY `fk4` (`garage_number`),
 CONSTRAINT `fk3` FOREIGN KEY (`manufacturer_name`) REFERENCES `car_manufacturer` (`manufacturer_name`),
 CONSTRAINT `fk4` FOREIGN KEY (`garage_number`) REFERENCES `licensed_garages` (`garage_number`))
+INSERT INTO `licensed_garages_of_several_car_manufacturers` VALUES ('mazda','54'),('mazda','55'),('toyota','56'),('subaru','57');
